@@ -26,5 +26,5 @@ def scheduled_job():
 scheduler = BlockingScheduler()
 
 scheduler.add_job(timed_job, "interval", seconds=30)
-scheduler.add_job(scheduled_job, 'cron', day='*', hour='*', minute='2')
+scheduler.add_job(scheduled_job, 'cron', day='*', hour='*', minute='*', second=30)
 scheduler.start()
