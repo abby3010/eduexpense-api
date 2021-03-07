@@ -11,13 +11,11 @@ db = firestore.client()
 
 sched = BackgroundScheduler(daemon=True)
 
-
-# @sched.scheduled_job('cron', day_of_week='mon-sun', hour=10)
-@sched.add_job('cron', day='*', hour='*', minute='2')
 def scheduled_job():
     
     db.collection(u'Users').document(u'abhayubhale.30@gmail.com').update({
         "count": firestore.Increment(1)
     })
 
+sched.add_job(scheduled_job, 'cron', day='*', hour='*', minute='2')
 sched.start()
