@@ -1,2 +1,1 @@
-web gunicorn main:app
-clock: python APIScheduler.py
+clock: python cronjobs.py
