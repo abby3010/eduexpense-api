@@ -110,7 +110,7 @@ def get_gold_rates():
         soup = BeautifulSoup(r.content, 'html.parser')
         gold_table = soup.findAll('table')[1]
         tola_row = gold_table.findAll('tr')[3]
-        
+
         change = tola_row.find('span').text.strip()
 
         row_data = tola_row.findAll('td')
@@ -130,6 +130,7 @@ def get_gold_rates():
     except Exception as e:
         print("Error while getting GOLD Rates::::", e)
 
+
 def get_silver_rates():
     URL = "https://www.goodreturns.in/silver-rates/#Indian+Major+Cities+Silver+Rates+Today"
 
@@ -138,7 +139,7 @@ def get_silver_rates():
         soup = BeautifulSoup(r.content, 'html.parser')
         silver_table = soup.find('table')
         tola_row = silver_table.findAll('tr')[3]
-        
+
         change = tola_row.find('span').text.strip()
 
         row_data = tola_row.findAll('td')
@@ -160,11 +161,41 @@ def get_silver_rates():
 
 
 def get_news():
-    news_api_key = "b36be927ef7c460e987571975b94707a"
-    url = f"http://newsapi.org/v2/top-headlines?country=in&category=business&apiKey={news_api_key}"
-    req = requests.get(url)
-    data = json.loads(req.content)
-    print(data)
+    url = "https://bing-news-search1.p.rapidapi.com/news/search"
+
+    querystring = {"q": "finance", "count": "100",
+                   "freshness": "Day", "textFormat": "Raw", "safeSearch": "Off"}
+
+    headers = {
+        'x-bingapis-sdk': "true",
+        'x-rapidapi-key': "4dac98df60msh691f1232fed0d9ap170cabjsna864eb3f1b87",
+        'x-rapidapi-host': "bing-news-search1.p.rapidapi.com"
+    }
+
+    try:
+        response = requests.request(
+            "GET", url, headers=headers, params=querystring)
+        response = response.json()
+
+        news_array = response["value"]
+        push_news = []
+        for news in news_array:
+            try: 
+                image_url = news["image"]["thumbnail"]["contentUrl"]
+            except:
+                image_url = None
+            data = {
+                "headline" : news["name"],
+                "description" : news["description"],
+                "image_url" : image_url
+            }
+            push_news.append(data)
+        db.collection(u'Finance Data').document(u'news').update({
+            "news": push_news
+        })
+        print("News Data added in Database")
+    except Exception as e:
+        print("Error while getting NEWS::::", e)
 
 
 
