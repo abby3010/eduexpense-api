@@ -19,3 +19,5 @@ scheduler.add_job(get_nifty, 'cron', day_of_week='mon-fri', hour='9-16', minute=
 scheduler.add_job(get_news, 'cron', hour='*', minute='0', timezone=tz)
 scheduler.start()
 print("Program Executed")
+scheduler.start()
+print("Program Executed")

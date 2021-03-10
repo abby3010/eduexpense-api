@@ -110,7 +110,6 @@ def get_gold_rates():
         soup = BeautifulSoup(r.content, 'html.parser')
         gold_table = soup.findAll('table')[1]
         tola_row = gold_table.findAll('tr')[3]
-
         change = tola_row.find('span').text.strip()
 
         row_data = tola_row.findAll('td')
@@ -130,7 +129,6 @@ def get_gold_rates():
     except Exception as e:
         print("Error while getting GOLD Rates::::", e)
 
-
 def get_silver_rates():
     URL = "https://www.goodreturns.in/silver-rates/#Indian+Major+Cities+Silver+Rates+Today"
 
@@ -139,7 +137,6 @@ def get_silver_rates():
         soup = BeautifulSoup(r.content, 'html.parser')
         silver_table = soup.find('table')
         tola_row = silver_table.findAll('tr')[3]
-
         change = tola_row.find('span').text.strip()
 
         row_data = tola_row.findAll('td')
